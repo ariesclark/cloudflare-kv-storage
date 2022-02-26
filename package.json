@@ -1,6 +1,6 @@
 {
   "name": "cloudflare-kv-storage",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A dead simple client for Cloudflare's KV storage 📦",
   "keywords": ["cloudflare", "kv", "key", "value", "store", "database"],
   "main": "dist/index.js",
@@ -11,7 +11,8 @@
   "author": "Aries Clark",
   "license": "MIT",
   "files": [
-    "./dist"
+    "./dist/index.js",
+    "./dist/index.d.ts"
   ],
   "dependencies": {
     "isomorphic-fetch": "^3.0.0",
