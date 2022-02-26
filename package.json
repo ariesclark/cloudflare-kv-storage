@@ -1,12 +1,14 @@
 {
   "name": "cloudflare-kv-storage",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.2",
+  "description": "A dead simple client for Cloudflare's KV storage 📦",
+  "keywords": ["cloudflare", "kv", "key", "value", "store", "database"],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc && terser ./dist/index.js --mangle --compress --output ./dist/index.js"
   },
-  "author": "",
+  "author": "Aries Clark",
   "license": "MIT",
   "files": [
     "./dist"
