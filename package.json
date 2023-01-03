@@ -1,6 +1,6 @@
 {
   "name": "cloudflare-kv-storage",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "A dead simple client for Cloudflare's KV storage 📦",
   "keywords": [
     "cloudflare",
