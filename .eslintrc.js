@@ -3,9 +3,5 @@ process.env["ESLINT_PROJECT_ROOT"] = __dirname;
 
 module.exports = {
 	root: true,
-	extends: [
-		"@ariesclark/eslint-config",
-		"@ariesclark/eslint-config/atoms/react",
-		"@ariesclark/eslint-config/atoms/tailwindcss"
-	]
+	extends: ["@ariesclark/eslint-config"]
 };

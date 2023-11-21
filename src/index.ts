@@ -1,6 +1,4 @@
-/* eslint-disable max-classes-per-file */
 import ms from "ms";
-import fetch from "isomorphic-fetch";
 
 export interface CloudflareKVOptions {
 	accountId: string;
@@ -66,17 +64,23 @@ function tryParse<T>(value: string): T | string {
 	}
 }
 
-function omit<T, K extends Array<keyof T>>(object: T, keys: K): Omit<T, K[number]> {
+function omit<T, K extends Array<keyof T>>(
+	object: T,
+	keys: K
+): Omit<T, K[number]> {
 	const newObject = { ...object };
 
-	keys.forEach((key) => delete newObject[key]);
+	for (const key of keys) delete newObject[key];
 	return newObject;
 }
 
 export class CloudflareKV {
 	public constructor(private options: CloudflareKVOptions) {}
 
-	private async request(path: string, options: RequestInit & { text?: boolean } = {}) {
+	private async request(
+		path: string,
+		options: RequestInit & { text?: boolean } = {}
+	) {
 		const url = `https://api.cloudflare.com/client/v4/accounts/${this.options.accountId}/storage/kv/${path}`;
 
 		return fetch(url, {
@@ -115,7 +119,10 @@ export class CloudflareKV {
 	 * @access com.cloudflare.edge.storage.kv.key.read
 	 * @see https://api.cloudflare.com/#workers-kv-namespace-read-key-value-pair
 	 */
-	public async get(key: string, options?: MethodOptions): Promise<GetMethodResponse> {
+	public async get(
+		key: string,
+		options?: MethodOptions
+	): Promise<GetMethodResponse> {
 		options = { namespaceId: this.options.namespaceId, ...options };
 		const query = new URLSearchParams(
 			omit(options, ["namespaceId"]) as Record<string, string>
@@ -123,7 +130,9 @@ export class CloudflareKV {
 
 		const response = tryParse<{ success: false }>(
 			await this.request(
-				`namespaces/${options.namespaceId}/values/${encodeURIComponent(key)}?${query}`,
+				`namespaces/${options.namespaceId}/values/${encodeURIComponent(
+					key
+				)}?${query}`,
 				{ text: true }
 			)
 		);
@@ -140,7 +149,11 @@ export class CloudflareKV {
 	 * @access com.cloudflare.edge.storage.kv.key.update
 	 * @see https://api.cloudflare.com/#workers-kv-namespace-write-key-value-pair
 	 */
-	public set(key: string, value: string, options?: SetMethodOptions): Promise<MethodResponse> {
+	public set(
+		key: string,
+		value: string,
+		options?: SetMethodOptions
+	): Promise<MethodResponse> {
 		options = { namespaceId: this.options.namespaceId, ...options };
 		if (options.expiration_ttl && typeof options.expiration_ttl === "string") {
 			options.expiration_ttl = ms(options.expiration_ttl);
@@ -151,7 +164,9 @@ export class CloudflareKV {
 		).toString();
 
 		return this.request(
-			`namespaces/${options.namespaceId}/values/${encodeURIComponent(key)}?${query}`,
+			`namespaces/${options.namespaceId}/values/${encodeURIComponent(
+				key
+			)}?${query}`,
 			{
 				method: "PUT",
 				body: value,
@@ -178,14 +193,20 @@ export class CloudflareKV {
 	 * @access com.cloudflare.edge.storage.kv.key.delete
 	 * @see https://api.cloudflare.com/#workers-kv-namespace-delete-key-value-pair
 	 */
-	public delete(keys: Array<string>, options?: MethodOptions): Promise<MethodResponse>;
+	public delete(
+		keys: Array<string>,
+		options?: MethodOptions
+	): Promise<MethodResponse>;
 
-	public delete(arg0: string | Array<string>, options?: MethodOptions): Promise<MethodResponse> {
+	public delete(
+		argument0: string | Array<string>,
+		options?: MethodOptions
+	): Promise<MethodResponse> {
 		options = { namespaceId: this.options.namespaceId, ...options };
 		const query = new URLSearchParams(
 			omit(options, ["namespaceId"]) as Record<string, string>
 		).toString();
-		const keys = Array.isArray(arg0) ? arg0 : [arg0];
+		const keys = Array.isArray(argument0) ? argument0 : [argument0];
 
 		return this.request(`namespaces/${options.namespaceId}/bulk?${query}`, {
 			method: "DELETE",
